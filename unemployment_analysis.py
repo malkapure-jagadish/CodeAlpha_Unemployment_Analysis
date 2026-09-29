@@ -105,5 +105,33 @@ print("1. Unemployment rates increased significantly during the COVID-19 period.
 print("2. The average unemployment rate before COVID-19 was approximately 8.09%.")
 print("3. The average unemployment rate during COVID-19 was approximately 16.18%.")
 print("4. Unemployment rates varied considerably across different regions.")
+plt.show()
+# Seasonal Trend Analysis
 
+df['Date'] = pd.to_datetime(df['Date'], dayfirst=True)
+
+df['Month'] = df['Date'].dt.month
+
+monthly_unemployment = df.groupby('Month')['Estimated Unemployment Rate (%)'].mean()
+
+print("\nAverage Unemployment Rate by Month:")
+print(monthly_unemployment)
+
+highest_month = monthly_unemployment.idxmax()
+lowest_month = monthly_unemployment.idxmin()
+
+print("\nSeasonal Trend Analysis:")
+print("Month with highest average unemployment rate:", highest_month)
+print("Month with lowest average unemployment rate:", lowest_month)
+
+plt.figure(figsize=(10, 5))
+monthly_unemployment.plot(kind='line', marker='o')
+
+plt.title('Average Unemployment Rate by Month')
+plt.xlabel('Month')
+plt.ylabel('Average Unemployment Rate (%)')
+plt.xticks(range(1, 13))
+plt.grid(True)
+
+plt.savefig('seasonal_unemployment_by_month.png')
 plt.show()
